@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="fB9XMl" name="Pitchfork" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginFormats="buildAU,buildVST3" bundleIdentifier="com.limitgauge.pitchfork"
+              pluginDesc="Analyzer" pluginManufacturer="LimitGauge" pluginManufacturerCode="LIMI"
+              pluginChannelConfigs="{1,1}" pluginVST3Category="Analyzer">
+  <MAINGROUP id="DMBeA7" name="Pitchfork">
+    <GROUP id="{83B9B271-EA55-1F89-A2D3-746D411BED4C}" name="Source">
+      <FILE id="ShwGCi" name="DataModels.cpp" compile="1" resource="0" file="Source/DataModels.cpp"/>
+      <FILE id="ntkYux" name="DataModels.h" compile="0" resource="0" file="Source/DataModels.h"/>
+      <FILE id="CksQfV" name="DCT.cpp" compile="1" resource="0" file="Source/DCT.cpp"/>
+      <FILE id="OTHemt" name="GUI.cpp" compile="1" resource="0" file="Source/GUI.cpp"/>
+      <FILE id="U5YzRH" name="GUI.h" compile="0" resource="0" file="Source/GUI.h"/>
+      <FILE id="tig5FF" name="GUIGlobals.h" compile="0" resource="0" file="Source/GUIGlobals.h"/>
+      <FILE id="bglZgA" name="GUIMain.cpp" compile="1" resource="0" file="Source/GUIMain.cpp"/>
+      <FILE id="xalX8k" name="GUIMain.h" compile="0" resource="0" file="Source/GUIMain.h"/>
+      <FILE id="u7LMtZ" name="GUISignal.cpp" compile="1" resource="0" file="Source/GUISignal.cpp"/>
+      <FILE id="o4MP47" name="GUISignal.h" compile="0" resource="0" file="Source/GUISignal.h"/>
+      <FILE id="q3iscB" name="GUISpectrum.cpp" compile="1" resource="0" file="Source/GUISpectrum.cpp"/>
+      <FILE id="XDDSPL" name="GUISpectrum.h" compile="0" resource="0" file="Source/GUISpectrum.h"/>
+      <FILE id="vx1KML" name="Stats.cpp" compile="1" resource="0" file="Source/Stats.cpp"/>
+      <FILE id="IOshkX" name="Stats.h" compile="0" resource="0" file="Source/Stats.h"/>
+      <FILE id="vAciPQ" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="i9ctya" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="xBzyFQ" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="mmWC97" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Pitchfork"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Pitchfork"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>

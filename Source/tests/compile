@@ -1,0 +1,28 @@
+#! /bin/bash
+UtilSrc=("CircularBuffer.cpp" "DCT.cpp" "Stats.cpp" "Tuning.cpp" "Waveforms.cpp" "Likelihood.cpp")
+MidiSrc=("MidiSwitch.cpp")
+ProcSrc=("ProcessData.cpp" "DataModels.cpp" "ModelInstances.cpp")
+TestSrc=("Debug.cpp")
+
+Path="/mnt/e/Projects/Scribe/src/"
+UtilPath=""
+MidiPath=""
+ProcPath=""
+
+Src=""
+Headers=""
+
+for s in ${UtilSrc[@]}; do
+  Src+="../"${UtilPath}${s}" "
+done
+
+for s in ${MidiSrc[@]}; do
+  Src+="../"${MidiPath}${s}" "
+done
+
+for s in ${ProcSrc[@]}; do
+  Src+="../"${ProcPath}${s}" "
+done
+
+
+g++  -I "../" -o test.o Test.cpp Debug.cpp -ggdb ${Src}
