@@ -10,18 +10,6 @@
 
 #include "GUIMain.h"
 
-void GuiMainTab::paint(juce::Graphics& g) 
-{
-    float srcY = getHeight() * 1.0f / 3.0f;
-    float srcX = getWidth() * 0.25f;
-    float srcW = 2*srcX;
-    float srcH = srcY;
-
-    auto rect = juce::Rectangle<float>(srcX, srcY, srcW, srcH);
-
-    g.drawImage(logo, rect);
-
-}
 
 GuiMainSlider::GuiMainSlider(const char* text, bool showText, double min, double max, double step) : 
     showText(showText)
@@ -31,10 +19,8 @@ GuiMainSlider::GuiMainSlider(const char* text, bool showText, double min, double
     this->text.setJustificationType(juce::Justification::centredTop);
     this->text.setBorderSize(juce::BorderSize<int>(0));
 
-    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-
-    //slider.setRotaryParameters(3.1415 * 225.0f / 180.0f, 3.1415 * 315.0f / 180.0f, true);
+    slider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    slider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 0, 0);
 
     addAndMakeVisible(this->text);
     addAndMakeVisible(slider);
@@ -43,9 +29,11 @@ GuiMainSlider::GuiMainSlider(const char* text, bool showText, double min, double
 void GuiMainSlider::resized()
 {
     auto area = getLocalBounds();
+    float third = area.getHeight() * 0.333f;
     if (showText) 
     {
-        auto sliderArea = area.removeFromTop(area.getHeight() * 0.75);
+
+        auto sliderArea = area.removeFromTop(third * 2);
 
         auto textArea = area;
 
@@ -56,6 +44,12 @@ void GuiMainSlider::resized()
     {
         slider.setBounds(area);
     }
+    slider.setTextBoxStyle(
+        juce::Slider::TextEntryBoxPosition::TextBoxBelow,
+        false,
+        slider.getWidth(), 
+        slider.getHeight() * 0.5f
+    );
     
 }
 
@@ -72,80 +66,56 @@ void GuiMainSlider::paint(juce::Graphics& g)
 }
 
 GuiMainPanel::GuiMainPanel() :
-    maxVel("Max Vel", true, 0, 127, 1),
-    minVel("Min Vel", true, 0, 127, 1),
-    maxdB("Max dB", true, -60, 0, 1),
-    noise("Noise dB", true, -60, 0, 1),
-    lowNote("Low Note", true, 12, 28, 1),
-    octave("Octave", true, -8, 8, 1),
-    semitone("Semitone", true, -12, 12, 1)
+    ratioSlider("Octave Ratio", true, 1, 10, 1),
+    indexSlider("History Index", true, 0, 599, 1) //tie this into Pitchfork vars later
 {
- 
 
-    midiLabel.setText("Midi", juce::NotificationType::dontSendNotification);
-    midiLabel.setJustificationType(juce::Justification::centred);
-    midiLabel.setBorderSize(juce::BorderSize<int>(0));
+    addAndMakeVisible(ratioSlider);
+    addAndMakeVisible(indexSlider);
+    addAndMakeVisible(hoverButton);
+    addAndMakeVisible(recordButton);
 
-    panic.setButtonText("!");
+    hoverButton.setButtonText("Hover Info");
+    recordButton.setButtonText("Record");
 
-    addAndMakeVisible(spectrumLabel);
-    
-    addAndMakeVisible(midiLabel);
-
-    addAndMakeVisible(maxVel);
-    addAndMakeVisible(minVel);
-    
-    addAndMakeVisible(maxdB);
-    addAndMakeVisible(noise);
-    
-    addAndMakeVisible(lowNote);
-    addAndMakeVisible(octave);
-    addAndMakeVisible(semitone);
-
-
-    addAndMakeVisible(panic);
 }
 
 
 void GuiMainPanel::resized() 
 {
     auto area = getLocalBounds();
+    float qtr = area.getHeight() * 0.25f;
+    float pad = 0;
 
-    float textH = area.getHeight() * 0.05;
-    float sliderH = area.getHeight() * 0.9 * 0.2;
+    auto ratioArea = area.removeFromTop(qtr);
+    pad = ratioArea.getHeight() * 0.05;
 
+    REMOVE_FROM_ALL_SIDES(ratioArea, pad);
+    ratioSlider.setBounds(ratioArea);
 
-    auto sliderArea = area;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    auto indexArea = area.removeFromTop(qtr);;
 
-#define SET_AREA(sl, sliderArea, frac){\
-sl.setBounds (sliderArea.removeFromLeft (sliderArea.getWidth() * frac));\
+    REMOVE_FROM_ALL_SIDES(indexArea, pad);
+    indexSlider.setBounds(indexArea);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define BUTTON_SETUP(subArea, guiObj) {\
+    subArea.removeFromLeft(pad);\
+    subArea.removeFromRight(pad);\
+    subArea.removeFromTop(subArea.getHeight()* 0.333f);\
+    subArea.removeFromBottom(subArea.getHeight() * 0.5f);\
+    guiObj.setBounds(subArea);\
 }
+    auto hoverArea = area.removeFromTop(qtr);
+    BUTTON_SETUP(hoverArea, hoverButton);
 
-    midiLabel.setBounds(area.removeFromTop(textH));
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    auto recordArea = area.removeFromTop(qtr);
+    BUTTON_SETUP(recordArea, recordButton)
 
-    sliderArea = area.removeFromTop(sliderH);
-
-    SET_AREA(maxVel, sliderArea, 0.333);
-    SET_AREA(minVel, sliderArea, 0.5);
-
-    sliderArea = area.removeFromTop(sliderH);
-
-    SET_AREA(maxdB, sliderArea, 0.333);
-    SET_AREA(noise, sliderArea, 0.5);
+#undef BUTTON_SETUP
 
 
-    sliderArea = area.removeFromTop(sliderH);
 
-    SET_AREA(lowNote, sliderArea, 0.333);
-    SET_AREA(octave, sliderArea, 0.5);
-    SET_AREA(semitone, sliderArea, 1.0);
-
-    area.removeFromLeft(area.getWidth() * 0.333);
-    area.removeFromRight(area.getWidth() * 0.5);
-    area.removeFromTop(area.getHeight() * 0.333);
-    area.removeFromBottom(area.getHeight() * 0.5);
-    panic.setBounds(area);
-
-#undef SET_AREA
-    
 }

@@ -7,6 +7,22 @@
               pluginChannelConfigs="{1,1}" pluginVST3Category="Analyzer">
   <MAINGROUP id="DMBeA7" name="Pitchfork">
     <GROUP id="{83B9B271-EA55-1F89-A2D3-746D411BED4C}" name="Source">
+      <FILE id="j96JlM" name="CircularBuffer.cpp" compile="1" resource="0"
+            file="Source/CircularBuffer.cpp"/>
+      <FILE id="aEoeyS" name="CircularBuffer.h" compile="0" resource="0"
+            file="Source/CircularBuffer.h"/>
+      <FILE id="CklCeM" name="DCT.h" compile="0" resource="0" file="Source/DCT.h"/>
+      <FILE id="ur0yA4" name="Head.h" compile="0" resource="0" file="Source/Head.h"/>
+      <FILE id="YTVasE" name="ModelInstances.cpp" compile="1" resource="0"
+            file="Source/ModelInstances.cpp"/>
+      <FILE id="sn3qDy" name="ModelInstances.h" compile="0" resource="0"
+            file="Source/ModelInstances.h"/>
+      <FILE id="FBhv3P" name="ProcessData.cpp" compile="1" resource="0" file="Source/ProcessData.cpp"/>
+      <FILE id="rbZJAC" name="ProcessData.h" compile="0" resource="0" file="Source/ProcessData.h"/>
+      <FILE id="RdWCpJ" name="Tuning.cpp" compile="1" resource="0" file="Source/Tuning.cpp"/>
+      <FILE id="poB787" name="Tuning.h" compile="0" resource="0" file="Source/Tuning.h"/>
+      <FILE id="ins4bo" name="Waveforms.cpp" compile="1" resource="0" file="Source/Waveforms.cpp"/>
+      <FILE id="f9eBZy" name="Waveforms.h" compile="0" resource="0" file="Source/Waveforms.h"/>
       <FILE id="ShwGCi" name="DataModels.cpp" compile="1" resource="0" file="Source/DataModels.cpp"/>
       <FILE id="ntkYux" name="DataModels.h" compile="0" resource="0" file="Source/DataModels.h"/>
       <FILE id="CksQfV" name="DCT.cpp" compile="1" resource="0" file="Source/DCT.cpp"/>
