@@ -15,3 +15,5 @@ fvec dct(const cmatrix& matrix, const fvec& signal);
 fvec dctSignalAvg(const fvec& weights, float signalSize);
 
 void setComplexMatrix(cmatrix& matrix, const fvec& freqs, const fvec& timeVector);
+
+void setHarmonicMatrix(std::vector<cmatrix>& matrix, const fvec& freqs, const fvec& timeVector, int harmonics = 32);

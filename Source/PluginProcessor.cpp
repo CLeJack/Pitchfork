@@ -12,7 +12,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-ScribeAudioProcessor::ScribeAudioProcessor()
+PitchforkAudioProcessor::PitchforkAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -29,17 +29,17 @@ ScribeAudioProcessor::ScribeAudioProcessor()
     
 }
 
-ScribeAudioProcessor::~ScribeAudioProcessor()
+PitchforkAudioProcessor::~PitchforkAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String ScribeAudioProcessor::getName() const
+const juce::String PitchforkAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool ScribeAudioProcessor::acceptsMidi() const
+bool PitchforkAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -48,7 +48,7 @@ bool ScribeAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool ScribeAudioProcessor::producesMidi() const
+bool PitchforkAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -57,7 +57,7 @@ bool ScribeAudioProcessor::producesMidi() const
    #endif
 }
 
-bool ScribeAudioProcessor::isMidiEffect() const
+bool PitchforkAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -66,50 +66,50 @@ bool ScribeAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double ScribeAudioProcessor::getTailLengthSeconds() const
+double PitchforkAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int ScribeAudioProcessor::getNumPrograms()
+int PitchforkAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int ScribeAudioProcessor::getCurrentProgram()
+int PitchforkAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void ScribeAudioProcessor::setCurrentProgram (int index)
+void PitchforkAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String ScribeAudioProcessor::getProgramName (int index)
+const juce::String PitchforkAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void ScribeAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void PitchforkAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void ScribeAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void PitchforkAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void ScribeAudioProcessor::releaseResources()
+void PitchforkAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool ScribeAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool PitchforkAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -132,7 +132,7 @@ bool ScribeAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
 }
 #endif
 
-void ScribeAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void PitchforkAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -142,52 +142,44 @@ void ScribeAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     switch(pluginState)
     {
         case PluginState::ready :   
-            ready (buffer, midiMessages);
-            break;
-        case PluginState::updating :
-            updating (buffer, midiMessages);
+            ready (buffer);
             break;
         default :
-            waiting(buffer, midiMessages);
+            waiting();
             break;
     }
 
-    if (scribe.sendAllNotesOff) 
-    {
-        juce::MidiMessage note;
+    auto* in = buffer.getReadPointer(0);
+    auto* out = buffer.getWritePointer(0);
 
-        for (int i = 0; i < scribe.fOnNotes.size(); i++)
-        {
-            note = juce::MidiMessage::noteOff(1, scribe.finalNote[i], (juce::uint8)0);
-            midiMessages.addEvent(note, 0);
-            scribe.turnOffMidi(i);
-        }
-        scribe.sendAllNotesOff = false;
+    for (int i = 0; i < buffer.getNumSamples(); i++) 
+    {
+        out[i] = in[i];
     }
     
 }
 
 //==============================================================================
-bool ScribeAudioProcessor::hasEditor() const
+bool PitchforkAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* ScribeAudioProcessor::createEditor()
+juce::AudioProcessorEditor* PitchforkAudioProcessor::createEditor()
 {
-    return new ScribeAudioProcessorEditor (*this);
+    return new PitchforkAudioProcessorEditor (*this);
     //return nullptr;
 }
 
 //==============================================================================
-void ScribeAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void PitchforkAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void ScribeAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void PitchforkAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -197,7 +189,7 @@ void ScribeAudioProcessor::setStateInformation (const void* data, int sizeInByte
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new ScribeAudioProcessor();
+    return new PitchforkAudioProcessor();
 }
 
 
@@ -207,27 +199,27 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 //plugin state processing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void ScribeAudioProcessor::waiting(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void PitchforkAudioProcessor::waiting()
 {
     if(getSampleRate() > 0)
     {
-        scribe.initialize(getSampleRate(), getBlockSize());
+        pitchfork.initialize(getSampleRate(), getBlockSize());
         pluginState = PluginState::ready;
     }
-    buffer.clear();
 }
 
-void ScribeAudioProcessor::ready(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void PitchforkAudioProcessor::ready(juce::AudioBuffer<float>& buffer)
 {
 
-    fpsBlocks = getSampleRate() / (getBlockSize() * fps);
+    
     //add the block to history
     auto* channelData = buffer.getReadPointer(0);
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
-        scribe.history.get()->push(normToInt16Range(channelData[i]));
+        pitchfork.signalHistory.get()->push(normToInt16Range(channelData[i]));
     }
 
+    /*
     //down sample the signal; currently without filtering
     fvec trueSignal = scribe.history.get()->toOrderedVec();
     
@@ -235,94 +227,38 @@ void ScribeAudioProcessor::ready(juce::AudioBuffer<float>& buffer, juce::MidiBuf
     {
         scribe.historyDS[i] = trueSignal[i * scribe.audio.ds.factor];
     }
+    */
 
-
-    calcs.updateRange(scribe, params);
-
-    calcs.updateSignal(scribe, params);
-
-    scribe.updateFundamental(calcs.range, calcs.blocks, calcs.amp, calcs.threshold);
-    //chords currently aren't functioning
-    //try the pitch-octave-certainty implementation next
-    //scribe.updateChords(calcs.range, calcs.blocks, calcs.amp, calcs.threshold);
-
-    //scribe.updateFMidiInfo(calcs.threshold, calcs.amp, calcs.velocity, calcs.range, calcs.shift, calcs.blocks);
-    //scribe.updateCMidiInfo(calcs.threshold, calcs.amp, calcs.velocity, calcs.range, calcs.shift);
-
-    //processMidi(midiMessages);
-
-    SwitchMessage message{};
-
-    MidiParams midiParams = getMidiParams(calcs, scribe);
-
-    message = scribe.midiSwitch.update(midiParams);
-
-    if (message.send)
-    {
-        juce::MidiMessage note;
-        note = juce::MidiMessage::noteOff(1, message.off, (juce::uint8) message.offVel);
-        midiMessages.addEvent(note, 0);
-
-        note = juce::MidiMessage::noteOn(1, message.on, (juce::uint8)message.onVel);
-        midiMessages.addEvent(note, 1);
-    }
+    pitchfork.updateFundamental();
 
     
-    frameCounter = (frameCounter + 1) % fpsBlocks; 
+    pitchfork.frameCounter = (pitchfork.frameCounter + 1) % pitchfork.fpsBlocks; 
 
-    auto editor = (ScribeAudioProcessorEditor*)getActiveEditor();
+    auto editor = (PitchforkAudioProcessorEditor*)getActiveEditor();
     
-    if (frameCounter == 0 && editor != nullptr) 
+    if (pitchfork.frameCounter == 0 && editor != nullptr)
     {
         //const juce::MessageManagerLock mmLock;
-
+        editor->updateSpectrum();
+        /*
         switch (editor->getTabState()) 
         {
-        case GUIState::spectrum:
+        case GUIState::live:
             editor->updateSpectrum();
             break;
-        case GUIState::signal:
-            editor->updateSignal();
+        case GUIState::historyA:
+            editor->updateSpectrum();
             break;
-        case GUIState::main:
+        case GUIState::historyB:
+            editor->updupdateSpectrumateSignal();
             break;
         }
+        */
         editor->repaint();
         
     }
     
 
-    buffer.clear();
-}
-
-void ScribeAudioProcessor::processMidi(juce::MidiBuffer& midiMessages)
-{
-    juce::MidiMessage note;
-
-    for (int i = 0; i < scribe.fOnNotes.size(); i++) 
-    {
-        if (scribe.fNeedsTrigger[i]) 
-        {
-            note = juce::MidiMessage::noteOn(1, scribe.finalNote[i], (juce::uint8) calcs.velocity.current);
-            midiMessages.addEvent(note, 0);
-            scribe.turnOnMidi(i, calcs.amp, calcs.threshold);
-        }
-
-        //calc dB check is itentional redundancy; this should turn off all notes if they are on when the amplitude is too low
-        if (scribe.fNeedsRelease[i]) 
-        {
-            note = juce::MidiMessage::noteOff(1, scribe.finalNote[i], (juce::uint8)0);
-            midiMessages.addEvent(note, 0);
-            scribe.turnOffMidi(i);
-        }
-    }
-}
-
-void ScribeAudioProcessor::updating(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
-{
-    pluginState = PluginState::waiting;
-    
-    buffer.clear();
 }
 
 //Gui state processing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

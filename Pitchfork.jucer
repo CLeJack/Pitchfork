@@ -7,8 +7,6 @@
               pluginChannelConfigs="{1,1}" pluginVST3Category="Analyzer">
   <MAINGROUP id="DMBeA7" name="Pitchfork">
     <GROUP id="{83B9B271-EA55-1F89-A2D3-746D411BED4C}" name="Source">
-      <FILE id="j96JlM" name="CircularBuffer.cpp" compile="1" resource="0"
-            file="Source/CircularBuffer.cpp"/>
       <FILE id="aEoeyS" name="CircularBuffer.h" compile="0" resource="0"
             file="Source/CircularBuffer.h"/>
       <FILE id="CklCeM" name="DCT.h" compile="0" resource="0" file="Source/DCT.h"/>
@@ -31,8 +29,6 @@
       <FILE id="tig5FF" name="GUIGlobals.h" compile="0" resource="0" file="Source/GUIGlobals.h"/>
       <FILE id="bglZgA" name="GUIMain.cpp" compile="1" resource="0" file="Source/GUIMain.cpp"/>
       <FILE id="xalX8k" name="GUIMain.h" compile="0" resource="0" file="Source/GUIMain.h"/>
-      <FILE id="u7LMtZ" name="GUISignal.cpp" compile="1" resource="0" file="Source/GUISignal.cpp"/>
-      <FILE id="o4MP47" name="GUISignal.h" compile="0" resource="0" file="Source/GUISignal.h"/>
       <FILE id="q3iscB" name="GUISpectrum.cpp" compile="1" resource="0" file="Source/GUISpectrum.cpp"/>
       <FILE id="XDDSPL" name="GUISpectrum.h" compile="0" resource="0" file="Source/GUISpectrum.h"/>
       <FILE id="vx1KML" name="Stats.cpp" compile="1" resource="0" file="Source/Stats.cpp"/>

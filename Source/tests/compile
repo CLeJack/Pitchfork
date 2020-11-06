@@ -1,6 +1,5 @@
 #! /bin/bash
-UtilSrc=("CircularBuffer.cpp" "DCT.cpp" "Stats.cpp" "Tuning.cpp" "Waveforms.cpp" "Likelihood.cpp")
-MidiSrc=("MidiSwitch.cpp")
+UtilSrc=("DCT.cpp" "Stats.cpp" "Tuning.cpp" "Waveforms.cpp")
 ProcSrc=("ProcessData.cpp" "DataModels.cpp" "ModelInstances.cpp")
 TestSrc=("Debug.cpp")
 
@@ -14,10 +13,6 @@ Headers=""
 
 for s in ${UtilSrc[@]}; do
   Src+="../"${UtilPath}${s}" "
-done
-
-for s in ${MidiSrc[@]}; do
-  Src+="../"${MidiPath}${s}" "
 done
 
 for s in ${ProcSrc[@]}; do

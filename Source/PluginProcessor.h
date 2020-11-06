@@ -15,20 +15,19 @@
 #include "GUIGlobals.h"
 #include "GUIMain.h"
 #include "GUISpectrum.h"
-#include "GUISignal.h"
 
 
 enum class PluginState {waiting, ready, updating};
-class ScribeAudioProcessorEditor;
+class PitchforkAudioProcessorEditor;
 //==============================================================================
 /**
 */
-class ScribeAudioProcessor  : public juce::AudioProcessor
+class PitchforkAudioProcessor  : public juce::AudioProcessor
 {
 public:
     //==============================================================================
-    ScribeAudioProcessor();
-    ~ScribeAudioProcessor() override;
+    PitchforkAudioProcessor();
+    ~PitchforkAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -73,22 +72,8 @@ public:
 private:
     //==============================================================================
 
-    void waiting(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void ready(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void updating(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void processMidi(juce::MidiBuffer& midiMessages);
-    
+    void waiting();
+    void ready(juce::AudioBuffer<float>& buffer);
 
-    std::vector<juce::MidiMessage> notes;
-
-    int frameCounter = 0;
-    const float fps = 30;
-    int fpsBlocks = 11;
-
-
-    
-
-    
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScribeAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PitchforkAudioProcessor)
 };

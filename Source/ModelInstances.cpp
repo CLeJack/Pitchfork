@@ -10,6 +10,6 @@
 
 #include "ModelInstances.h"
 
-Pitchfork scribe;
 AudioParams params;
+Pitchfork pitchfork;
 Calculations calcs;

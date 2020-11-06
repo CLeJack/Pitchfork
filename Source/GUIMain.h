@@ -32,5 +32,6 @@ public:
     GuiMainSlider ratioSlider;
     GuiMainSlider indexSlider;
     juce::ToggleButton hoverButton;
-    juce::ToggleButton recordButton;
+    juce::ToggleButton recordButtonA;
+    juce::ToggleButton recordButtonB;
 };

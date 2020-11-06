@@ -76,3 +76,17 @@ void setComplexMatrix(cmatrix& matrix, const fvec& freqs, const fvec& timeVector
         }
     }
 }
+
+void setHarmonicMatrix(std::vector<cmatrix>& matrix, const fvec& freqs, const fvec& timeVector, int harmonics)
+{
+    //f0 = fundamnetal harmonic
+    fvec harmonicVector(harmonics,0);
+    for(int row = 0; row < freqs.size(); row++)
+    {
+        for(int h = 1; h < harmonics + 1; h++)
+        {
+            harmonicVector[h] = freqs[row] * h;
+        }
+        setComplexMatrix(matrix[row], harmonicVector, timeVector);
+    }
+}

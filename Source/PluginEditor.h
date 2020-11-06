@@ -14,13 +14,13 @@
 
 //==============================================================================
 
-class ScribeAudioProcessorEditor  : public juce::AudioProcessorEditor, 
+class PitchforkAudioProcessorEditor  : public juce::AudioProcessorEditor, 
     public juce::Slider::Listener,
     public juce::Button::Listener
 {
 public:
-    ScribeAudioProcessorEditor (ScribeAudioProcessor&);
-    ~ScribeAudioProcessorEditor() override;
+    PitchforkAudioProcessorEditor (PitchforkAudioProcessor&);
+    ~PitchforkAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -29,10 +29,8 @@ public:
     void buttonClicked(juce::Button* button) override;
     
     void updateSpectrum();
-    void updateSignal();
 
-
-    void setSliders();
+    void setComponents();
     GUIState getTabState();
     
     
@@ -41,16 +39,16 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    ScribeAudioProcessor& audioProcessor;
+    PitchforkAudioProcessor& audioProcessor;
 
-    GuiMainTab guiMainTab;
     GuiMainPanel guiMainPanel;
-    GuiSpectrum guiSpectrum;
-    GuiSignal guiSignal;
+    GuiSpectrum guiLive;
+    GuiSpectrum guiHistoryA;
+    GuiSpectrum guiHistoryB;
     GuiTabs guiTabs;
     
 
     
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScribeAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PitchforkAudioProcessorEditor)
 };

@@ -73,10 +73,12 @@ GuiMainPanel::GuiMainPanel() :
     addAndMakeVisible(ratioSlider);
     addAndMakeVisible(indexSlider);
     addAndMakeVisible(hoverButton);
-    addAndMakeVisible(recordButton);
+    addAndMakeVisible(recordButtonA);
+    addAndMakeVisible(recordButtonB);
 
     hoverButton.setButtonText("Hover Info");
-    recordButton.setButtonText("Record");
+    recordButtonA.setButtonText("Rec. A");
+    recordButtonB.setButtonText("Rec. B");
 
 }
 
@@ -84,17 +86,17 @@ GuiMainPanel::GuiMainPanel() :
 void GuiMainPanel::resized() 
 {
     auto area = getLocalBounds();
-    float qtr = area.getHeight() * 0.25f;
+    float segmentSize = area.getHeight() * 0.20f;
     float pad = 0;
 
-    auto ratioArea = area.removeFromTop(qtr);
+    auto ratioArea = area.removeFromTop(segmentSize);
     pad = ratioArea.getHeight() * 0.05;
 
     REMOVE_FROM_ALL_SIDES(ratioArea, pad);
     ratioSlider.setBounds(ratioArea);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    auto indexArea = area.removeFromTop(qtr);;
+    auto indexArea = area.removeFromTop(segmentSize);;
 
     REMOVE_FROM_ALL_SIDES(indexArea, pad);
     indexSlider.setBounds(indexArea);
@@ -107,12 +109,15 @@ void GuiMainPanel::resized()
     subArea.removeFromBottom(subArea.getHeight() * 0.5f);\
     guiObj.setBounds(subArea);\
 }
-    auto hoverArea = area.removeFromTop(qtr);
+    auto hoverArea = area.removeFromTop(segmentSize);
     BUTTON_SETUP(hoverArea, hoverButton);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    auto recordArea = area.removeFromTop(qtr);
-    BUTTON_SETUP(recordArea, recordButton)
+    auto recordArea = area.removeFromTop(segmentSize);
+    BUTTON_SETUP(recordArea, recordButtonA);
+
+    recordArea = area;
+    BUTTON_SETUP(recordArea, recordButtonB);
 
 #undef BUTTON_SETUP
 

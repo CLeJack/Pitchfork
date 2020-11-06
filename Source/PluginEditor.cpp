@@ -10,10 +10,11 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-ScribeAudioProcessorEditor::ScribeAudioProcessorEditor(ScribeAudioProcessor& p)
+PitchforkAudioProcessorEditor::PitchforkAudioProcessorEditor(PitchforkAudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
-    guiSpectrum(scribe.frequencies.size(), scribe.tuning.octaveSize),
-    guiSignal(scribe.audio.ds.samples, 60)
+    guiLive(pitchfork.frequencies.size(), pitchfork.tuning.octaveSize),
+    guiHistoryA(pitchfork.frequencies.size(), pitchfork.tuning.octaveSize),
+    guiHistoryB(pitchfork.frequencies.size(), pitchfork.tuning.octaveSize)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -21,56 +22,50 @@ ScribeAudioProcessorEditor::ScribeAudioProcessorEditor(ScribeAudioProcessor& p)
 
     setLookAndFeel(new PaperLookAndFeel());
 
-    guiMainTab.setLookAndFeel(new PaperLookAndFeel());
     guiMainPanel.setLookAndFeel(new PaperLookAndFeel());
     guiTabs.setLookAndFeel(new PaperLookAndFeel());
-    guiSpectrum.setLookAndFeel(new PaperLookAndFeel());
-    guiSignal.setLookAndFeel(new PaperLookAndFeel());
+    guiLive.setLookAndFeel(new PaperLookAndFeel());
+    guiHistoryA.setLookAndFeel(new PaperLookAndFeel());
+    guiHistoryB.setLookAndFeel(new PaperLookAndFeel());
 
     addAndMakeVisible(guiMainPanel);
     addAndMakeVisible(guiTabs);
 
-    guiTabs.addTab("Main",   PAPER, &guiMainTab,   false);
-    guiTabs.addTab("Spectrum", PAPER, &guiSpectrum, false);
-    guiTabs.addTab("Signal", PAPER, &guiSignal,   false);
+    guiTabs.addTab("Live",   PAPER, &guiLive,   false);
+    guiTabs.addTab("History A", PAPER, &guiHistoryA, false);
+    guiTabs.addTab("History B", PAPER, &guiHistoryB,   false);
 
-    guiMainTab.resized();
+    
     guiMainPanel.resized();
-    guiSpectrum.resized();
-    guiSignal.resized();
+    guiLive.resized();
+    guiHistoryA.resized();
+    guiHistoryB.resized();
 
-    guiMainPanel.maxdB.slider.addListener(this);
-    guiMainPanel.maxVel.slider.addListener(this);
-    guiMainPanel.minVel.slider.addListener(this);
+    guiMainPanel.ratioSlider.slider.addListener(this);
+    guiMainPanel.indexSlider.slider.addListener(this);
+
+    guiMainPanel.recordButtonA.addListener(this);
+    guiMainPanel.recordButtonB.addListener(this);
+    guiMainPanel.hoverButton.addListener(this);
     
-    guiMainPanel.lowNote.slider.addListener(this);
-    guiMainPanel.octave.slider.addListener(this);
-    guiMainPanel.semitone.slider.addListener(this);
-    
-    guiMainPanel.noise.slider.addListener(this);
-
-    guiMainPanel.panic.addListener(this);
-    
-
-
-    setSliders();
+    setComponents();
     
 
 }
 
-ScribeAudioProcessorEditor::~ScribeAudioProcessorEditor()
+PitchforkAudioProcessorEditor::~PitchforkAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void ScribeAudioProcessorEditor::paint (juce::Graphics& g)
+void PitchforkAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     
 }
 
-void ScribeAudioProcessorEditor::resized()
+void PitchforkAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
     guiMainPanel.setBounds(area.removeFromLeft(area.getWidth() * .333));
@@ -80,93 +75,90 @@ void ScribeAudioProcessorEditor::resized()
 
 
 
-GUIState ScribeAudioProcessorEditor::getTabState() 
+GUIState PitchforkAudioProcessorEditor::getTabState() 
 {
     return guiTabs.guiState;
 }
 
-void ScribeAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) 
+void PitchforkAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) 
 {
-    auto& panel = guiMainPanel;
 
-    if (slider == &panel.minVel.slider)
+    if (slider == &guiMainPanel.ratioSlider.slider)
     {
-        params.velocity.min = slider->getValue();
-    }
-
-    else if (slider == &panel.maxVel.slider)
-    {
-        params.velocity.max = slider->getValue();
-    }
-    else if (slider == &panel.maxdB.slider)
-    {
-        params.velocity.maxdB = slider->getValue();
+        params.octaveRatio = slider->getValue();
     }
 
-    else if (slider == &panel.octave.slider)
+    else if (slider == &guiMainPanel.indexSlider.slider)
     {
-        params.shift.octave = slider->getValue();
-    }
-
-    else if (slider == &panel.semitone.slider)
-    {
-        params.shift.semitone = slider->getValue();
-    }
-    
-    else if (slider == &panel.noise.slider)
-    {
-        params.threshold.noise = slider->getValue();
-    }
-    else if (slider == &panel.lowNote.slider)
-    {
-        params.range.lowNote = slider->getValue();
+        params.historyIndex = (int)slider->getValue();
     }
 
 
 
 }
 
-void ScribeAudioProcessorEditor::buttonClicked(juce::Button* button) 
+void PitchforkAudioProcessorEditor::buttonClicked(juce::Button* button) 
 {
-    if (button == &guiMainPanel.panic) 
+    if (button == &guiMainPanel.hoverButton) 
     {
-        scribe.sendAllNotesOff = true;
+        params.hoverOn = button->getToggleState();
+    }
+    else if (button == &guiMainPanel.recordButtonA) 
+    {
+        params.recordA = button->getToggleState();
+    }
+    else if (button == &guiMainPanel.recordButtonA) 
+    {
+        params.recordB = button->getToggleState();
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void ScribeAudioProcessorEditor::setSliders()
+void PitchforkAudioProcessorEditor::setComponents()
 {
-    guiMainPanel.maxdB.slider.setValue(params.velocity.maxdB);
-    guiMainPanel.maxVel.slider.setValue(params.velocity.max);
-    guiMainPanel.minVel.slider.setValue(params.velocity.min);
-
-    guiMainPanel.lowNote.slider.setValue(params.range.lowNote);
-    guiMainPanel.octave.slider.setValue(params.shift.octave);
-    guiMainPanel.semitone.slider.setValue(params.shift.semitone);
-
-    guiMainPanel.noise.slider.setValue(params.threshold.noise);
+    guiMainPanel.ratioSlider.slider.setValue(params.octaveRatio);
+    guiMainPanel.indexSlider.slider.setValue(params.historyIndex);
+    guiMainPanel.hoverButton.setToggleState(params.hoverOn, juce::NotificationType::dontSendNotification);
+    guiMainPanel.recordButtonA.setToggleState(false, juce::NotificationType::dontSendNotification);
+    guiMainPanel.recordButtonB.setToggleState(false, juce::NotificationType::dontSendNotification);
 
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void ScribeAudioProcessorEditor::updateSpectrum()
+void PitchforkAudioProcessorEditor::updateSpectrum()
 {
-    for (int i = 0; i < scribe.weights.size(); i++)
+    for (int i = 0; i < pitchfork.freqWeights.size(); i++)
     {
-        guiSpectrum.certainty.weights[i] = scribe.fundamentalHistory[i];
+        guiLive.freqs.weights[i] = pitchfork.freqWeights[i];
+    }
+    for (int i = 0; i < pitchfork.harmonicWeights.size(); i++) 
+    {
+        guiLive.harmonics.weights[i] = pitchfork.harmonicWeights[i];
     }
 
-
-}
-
-void ScribeAudioProcessorEditor::updateSignal()
-{
-    for (int i = 0; i < scribe.historyDS.size(); i++)
+    if (params.recordA) 
     {
-        guiSignal.scope.signalVec[i] = scribe.historyDS[i];
+        for (int i = 0; i < pitchfork.freqWeights.size(); i++)
+        {
+            guiHistoryA.freqs.weights[i] = pitchfork.freqHistA[params.historyIndex][i];
+        }
+        for (int i = 0; i < pitchfork.harmonicWeights.size(); i++)
+        {
+            guiHistoryA.harmonics.weights[i] = pitchfork.harmHistA[params.historyIndex][i];
+        }
     }
 
-    guiSignal.meter.dBBuffer.push(calcs.amp.dB);
+    if (params.recordB)
+    {
+        for (int i = 0; i < pitchfork.freqWeights.size(); i++)
+        {
+            guiHistoryB.freqs.weights[i] = pitchfork.freqHistB[params.historyIndex][i];
+        }
+        for (int i = 0; i < pitchfork.harmonicWeights.size(); i++)
+        {
+            guiHistoryB.harmonics.weights[i] = pitchfork.harmHistB[params.historyIndex][i];
+        }
+    }
+
 
 }

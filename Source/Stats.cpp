@@ -440,7 +440,7 @@ float getPeriod(float freq, float srate, int size)
 }
 
 
-float SMA(float hist, float val, float size)
+float SMA(float hist, float val, int size)
 {
     /*
     it seems this method has two vunerabilities
@@ -454,6 +454,11 @@ float SMA(float hist, float val, float size)
     log(0) introduces infinities, but rounding error shouldn't be an issue.
     */
    float frac = 1.0f/size;
+    return hist * (1 - frac) + (val * frac);
+}
+
+float SMA(float hist, float val, float frac)
+{
     return hist * (1 - frac) + (val * frac);
 }
 

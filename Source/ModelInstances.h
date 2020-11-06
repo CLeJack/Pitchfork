@@ -11,6 +11,7 @@
 #pragma once
 #include "DataModels.h"
 
-extern Pitchfork pitchfork;
 extern AudioParams params;
+extern Pitchfork pitchfork;
+
 extern Calculations calcs;

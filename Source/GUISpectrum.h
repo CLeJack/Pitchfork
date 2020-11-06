@@ -36,21 +36,6 @@ public:
     std::vector<float> weights;
 };
 
-class SpectrumCertainty : public SpectrumBars 
-{
-public:
-    SpectrumCertainty(float barCount);
-    void paint(juce::Graphics& g) override;
-
-    std::vector<float> chordWeights;
-};
-
-class SpectrumPeaks : public SpectrumBars 
-{
-public:
-    SpectrumPeaks(float barCount);
-    void paint(juce::Graphics& g) override;
-};
 
 class SpectrumNotes : public juce::Component 
 {
@@ -73,7 +58,12 @@ public:
 
     SpectrumBackground background1;
     SpectrumNotes notes1;
-    SpectrumCertainty certainty;
+    SpectrumBars freqs;
+
+    SpectrumBackground background2;
+    SpectrumBars harmonics;
+
+    float maxfreq = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GuiSpectrum);
 };

@@ -14,11 +14,17 @@
 GuiSpectrum::GuiSpectrum(int barCount, int octaveSize) : 
     background1(barCount, octaveSize),
     notes1(barCount, octaveSize),
-    certainty(barCount)
+    freqs(barCount),
+
+    background2(32, 1),
+    harmonics(32)
 {
     addAndMakeVisible(background1);
     addAndMakeVisible(notes1);
-    addAndMakeVisible(certainty);
+    addAndMakeVisible(freqs);
+
+    addAndMakeVisible(background2);
+    addAndMakeVisible(harmonics);
 
 }
 
@@ -31,7 +37,7 @@ void GuiSpectrum::resized()
     float H = area.getHeight();
     float W = area.getWidth();
 
-    float pad = area.getHeight() * 0.05f;
+    float pad = area.getHeight() * 0.05;
 
     REMOVE_FROM_ALL_SIDES(area, pad);
 
@@ -40,17 +46,20 @@ void GuiSpectrum::resized()
     H = area.getHeight();
     W = area.getWidth();
 
-    //auto displayArea1 = area.removeFromTop(H*0.5f);
+    auto displayArea1 = area.removeFromTop(H * 0.5);
 
-    //displayArea1.removeFromBottom(pad * 0.5f);
+    displayArea1.removeFromBottom(pad * 0.5);
 
-    auto displayArea1 = area;
+    auto displayArea2 = area;
+    displayArea2.removeFromTop(pad * 0.5);
 
     //set all bounds~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
     background1.setBounds (displayArea1);
     notes1.setBounds      (displayArea1.removeFromBottom(displayArea1.getHeight() * 0.05f));
-    certainty.setBounds  (displayArea1);
+    freqs.setBounds     (displayArea1);
+
+    background2.setBounds (displayArea2);
+    harmonics.setBounds     (displayArea2);
     
 
     
@@ -126,64 +135,7 @@ void SpectrumBars::paint(juce::Graphics& g)
     g.drawRect(getLocalBounds(), 2.0f);
 }
 
-SpectrumCertainty::SpectrumCertainty(float barCount) : SpectrumBars(barCount), chordWeights(barCount)
-{
-}
 
-void SpectrumCertainty::paint(juce::Graphics& g) 
-{
-    float Y = 0;
-    float X = 0;
-    float W = getWidth() / (float)weights.size();
-    float H = getHeight();
-
-    /*
-    g.setColour(FADE_BLACK_INK);
-
-    for (int i = 0; i < chordWeights.size(); i++) 
-    {
-        Y = H * chordWeights[i];
-        g.fillRect(X, H - Y, W, Y);
-
-        X += W;
-    }
-
-    X = 0;
-    */
-    g.setColour(BOLD_BLACK_INK);
-
-    for (int i = 0; i < weights.size(); i++)
-    {
-        Y = H * weights[i];
-        g.fillRect(X, H - Y, W, Y);
-
-        X += W;
-    }
-
-}
-
-
-SpectrumPeaks::SpectrumPeaks(float barCount) : SpectrumBars(barCount) 
-{
-}
-
-void SpectrumPeaks::paint(juce::Graphics& g) 
-{
-    float Y = 0;
-    float X = 0;
-    float W = getWidth() / (float)weights.size();
-    float H = getHeight();
-
-    g.setColour(FADE_GREEN_INK);
-
-    for (int i = 0; i < weights.size(); i++)
-    {
-        Y = H * weights[i];
-        g.fillRect(X, H - Y, W, Y);
-
-        X += W;
-    }
-}
 
 SpectrumNotes::SpectrumNotes(float barCount, float octaveSize) : keys(barCount)
 {
