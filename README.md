@@ -4,7 +4,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 ---
 
-<div align="center"> #### Plugin Generation </div>
+<div align="center"> <h4>Plugin Generation</h4> </div>
 
 **PluginProcessor** - Handles all audio processing. It is mostly unmodified from the default JUCE file, and wraps Pitchfork
 
@@ -20,7 +20,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 ---
 
-<div align="center"> #### Calculations and processing </div>
+<div align="center"> <h4>Calculations and processing</h4> </div>
 
 **CircularBuffer** - receives a continuous stream of data that can be converted to a vector when needed
 
@@ -41,7 +41,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 ---
 
-<div align="center"> #### Testing </div>
+<div align="center"> <h4>Testing</h4> </div>
 
 **/tests** - Conatins files for visually testing output data (as .csv) on .wav files without building the full plugin.
  - This is decoupled from the PluginEditor and PluginProcessor.
