@@ -2,6 +2,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 ### Source
 
+#### Plugin Generation
 **PluginProcessor** - Handles all audio processing. It is mostly unmodified from the default JUCE file, and wraps Pitchfork
 
 **DataModels** - these models are exposed globally to allow communication between the Editor (GUI) and AudioProcessors
@@ -14,6 +15,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 **GUIX** - various customized GUI components that inherit from JUCE built in objects
 
+#### Calculations and processing
 **CircularBuffer** - receives a continuous stream of data that can be converted to a vector when needed
 
 **DCT** - Discrete Customized (Fourier) Transform. 
@@ -21,7 +23,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 - removes constraints of window size and frequency resolution
 - loses the ability to reconstruct a signal or get absolute amplitude information
 
-**Head** - definces some convenience macro definitions and a few inline functions. Included at the top of other header files
+**Head** - defines some convenience macro definitions and a few inline functions. Included at the top of other header files
 
 **Stats** - some basic statistic functions
 
@@ -31,6 +33,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 
 **ProcessData** - a hold over from Scribe, this may be integrated into Stats later.
 
+#### Testing
 **/tests** - Conatins files for visually testing output data (as .csv) on .wav files without building the full plugin.
  - This is decoupled from the PluginEditor and PluginProcessor.
 
