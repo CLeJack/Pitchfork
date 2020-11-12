@@ -1,6 +1,7 @@
 Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead of producing midi, it plots the frequency spectrum and the harmonic spectrum of an incoming signal.
 
 ### Source
+
 ---
 
 #### Plugin Generation
@@ -16,6 +17,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 **PluginEditor** - Handles the gui processing and pulls data from the Pitchfork struct to present it to the user.
 
 **GUIX** - various customized GUI components that inherit from JUCE built in objects
+
 ---
 
 #### Calculations and processing
@@ -36,6 +38,7 @@ Pitchfork is a project derived from Scribe, the audio to MIDI converter. Instead
 **Waveforms** - sin, complex sin, and time vectors necessary to calculate waveforms
 
 **ProcessData** - a hold over from Scribe, this may be integrated into Stats later.
+
 ---
 
 #### Testing
