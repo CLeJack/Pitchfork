@@ -1,7 +1,6 @@
 #! /bin/bash
 UtilSrc=("DCT.cpp" "Stats.cpp" "Tuning.cpp" "Waveforms.cpp")
 ProcSrc=("ProcessData.cpp" "DataModels.cpp" "ModelInstances.cpp")
-TestSrc=("Debug.cpp")
 
 Path="/mnt/e/Projects/Scribe/src/"
 UtilPath=""

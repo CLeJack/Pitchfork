@@ -12,4 +12,3 @@
 
 AudioParams params;
 Pitchfork pitchfork;
-Calculations calcs;

@@ -74,7 +74,7 @@ void Pitchfork::updateFundamental(const AudioParams& params)
        maxIndex =  freqWeights[maxIndex] / freqWeights[maxIndex - 12] < params.octaveRatio ? maxIndex - 12 : maxIndex;
     }
 
-    //32nd harmonic = 5th octave, so I remove 5 octaves from frequency range
+    //32nd harmonic = 5th octave, so I remove 5 octaves (5 * 12) from the frequency range
     //anything below this limit can use the downsampled signal
     //anything above this limit must use the normal signal
 
@@ -97,7 +97,7 @@ void Pitchfork::updateFundamental(const AudioParams& params)
             harmonicMatrix->at(maxIndex), signalHistory->toOrderedVec(),
             0, harmonics,
             0, historyDS.size()); 
-            //historyDS.size() is intentional here, frequencies at this range don't need
+            //historyDS.size() is intentional here
             //frequencies at this range (c3 and up) don't need the full signal
 
         //get rid of freqs that exceed nyquist limit;

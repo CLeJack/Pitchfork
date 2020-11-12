@@ -13,5 +13,3 @@
 
 extern AudioParams params;
 extern Pitchfork pitchfork;
-
-extern Calculations calcs;

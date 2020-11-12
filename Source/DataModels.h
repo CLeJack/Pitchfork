@@ -30,7 +30,7 @@ struct Tuning
     const int octaveSize = 12;
 
     const int lowExp = -57; // -57 = C0
-    const int highExp = 50 - 12; // 50 = B8; aliasing exist in octaves 7 to 8;
+    const int highExp = 50 - 12; // 50 = B8;
 };
 
 struct Audio
@@ -39,7 +39,7 @@ struct Audio
 
     struct DownSample
     {
-        const float srate = 8000;
+        const float srate = 8820;
 
         const int samples = srate * Audio::historyTime() + 1; //size of history not blocksize
 

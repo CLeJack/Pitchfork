@@ -22,14 +22,6 @@ int main()
     printColumn(pitchfork.timeVectorDS, "output/_0_timeVectorDS.csv");
     printMatrixReal(pitchfork.freqMatrixDS, "output/_0_cmatrixDS.csv",0);
 
-    //int fend = pitchfork.frequencies.size() - 1;
-    //printMatrixReal(pitchfork.harmonicMatrixDS[0], "output/_0_hmatrixDS1.csv",0);
-    //printMatrixReal(pitchfork.harmonicMatrixDS[fend], "output/_0_hmatrixDS2.csv",0);
-    //printMatrixReal(pitchfork.harmonicMatrix.get()->at(0), "output/_0_hmatrix1.csv",0);
-    //printMatrixReal(pitchfork.harmonicMatrix.get()->at(fend), "output/_0_hmatrix2.csv",0);
-
-    //printColumn(signal0, "output/_1_signal.csv");
-
     #endif
 
     int loops = (signal0.size() / pitchfork.audio.blockSize);
@@ -92,19 +84,6 @@ int main()
             midiSwitch.notes.prev <<", "<<
             (float)midiSwitch.state <<"\n";
 #endif
-/*
-    for(int i = 0; i < scribe.fNeedsRelease.size(); i++)
-        {
-            if(scribe.fNeedsTrigger[i])
-            {
-                scribe.turnOnMidi(i, calcs.amp, calcs.threshold);
-            }
-            if(scribe.fNeedsRelease[i])
-            {
-                scribe.turnOffMidi(i);
-            }
-        }
-        */
     }
     return 0;
 }

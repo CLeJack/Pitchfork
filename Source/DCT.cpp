@@ -1,6 +1,6 @@
 #include "DCT.h"
 
-// Discrete Customized Transform
+// Discrete Customized Fourier Transform
 
 void dct(fvec& weights, const cmatrix& matrix, const fvec& signal, 
 int rowi, int rowf, int indi, int indf)
@@ -48,17 +48,6 @@ fvec dct(const cmatrix& matrix, const fvec& signal)
     int indf = signal.size();
 
     return dct( matrix, signal, 0, rowf, 0, indf);
-}
-
-fvec dctSignalAvg(const fvec& weights, float signalSize)
-{
-    fvec output(weights.size(), 0);
-    for(int i = 0; i < output.size(); i++)
-    {
-        output[i]/signalSize;
-    }
-
-    return output;
 }
 
 
