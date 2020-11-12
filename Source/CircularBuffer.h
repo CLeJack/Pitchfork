@@ -31,7 +31,7 @@ public:
     {
         vec[head] = val;
         //head = (head + 1) % size;
-        //inline ternary generally 2-3 times as fast as modulo on replit
+        //inline ternary generally 2-3 times as fast as modulo on repl.it
         head = head + 1 < size ? head + 1 : 0;
     };
 

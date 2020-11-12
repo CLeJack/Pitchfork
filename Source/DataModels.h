@@ -116,9 +116,3 @@ struct Pitchfork {
     fvec historyDS = fvec(audio.ds.samples, 0.0001f);
 
 };
-
-
-struct Calculations
-{
-
-};
